@@ -1,5 +1,3 @@
-import com.mysql.cj.xdevapi.Result;
-
 import java.sql.*;
 import java.util.Properties;
 import java.util.Scanner;
@@ -13,27 +11,24 @@ public class BasicRetrieveProgram {
         properties.setProperty("user", "root");
         properties.setProperty("password", "1234");
 
-        Connection connection = DriverManager
-                .getConnection("jdbc:mysql://localhost:3306/minions", properties);
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/diablo", properties);
 
-        String name = scanner.nextLine();
-        int age = Integer.parseInt(scanner.nextLine());
+        String user = scanner.nextLine();
 
-        PreparedStatement statement =
-                connection.prepareStatement("SELECT * FROM minions WHERE name = ? AND age > ?");
+        PreparedStatement pr = connection.prepareStatement("SELECT first_name, last_name, COUNT(ug.user_id) as count FROM users u JOIN users_games ug on u.id = ug.user_id WHERE user_name = ? GROUP BY first_name, last_name");
+        pr.setString(1, user);
 
-        statement.setString(1, name);
-        statement.setInt(2, age);
+        ResultSet rs = pr.executeQuery();
 
-
-        ResultSet rs = statement.executeQuery();
-
-        while(rs.next()){
-            System.out.println(rs.getString("name") + " " + rs.getString("age"));
+        if (rs.next()) {
+            int count = rs.getInt("count");
+            String firstName = rs.getString("first_name");
+            String lastName = rs.getString("last_name");
+            System.out.println("User: " + user);
+            System.out.println(firstName + " " + lastName + " has played " + count + " games");
+        } else {
+            System.out.println("No such user exists");
         }
-
-
-
 
 
     }
