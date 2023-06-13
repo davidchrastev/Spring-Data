@@ -24,10 +24,12 @@ public class Main {
                 .getConnection("jdbc:mysql://localhost:3306/soft_uni", props);
 
         PreparedStatement stmt =
-                connection.prepareStatement("SELECT * FROM employees WHERE salary > ?");
+                connection.prepareStatement("SELECT * FROM employees WHERE salary > ? AND first_name = ?");
 
         String salary = sc.nextLine();
+        String first_name = sc.nextLine();
         stmt.setDouble(1, Double.parseDouble(salary));
+        stmt.setString(2, first_name);
         ResultSet rs = stmt.executeQuery();
 
         while(rs.next()){
