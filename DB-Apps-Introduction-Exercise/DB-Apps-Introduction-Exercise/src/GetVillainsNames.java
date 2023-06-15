@@ -8,6 +8,8 @@ public class GetVillainsNames {
         PreparedStatement statement = getPreparedStatement(connection);
 
         printResult(statement);
+
+        connection.close();
     }
 
     private static Connection setUpConnection() throws SQLException {

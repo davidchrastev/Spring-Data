@@ -15,6 +15,8 @@ public class GetMinionNames {
         ResultSet resultSet = firstStatement.executeQuery();
 
         printOutput(id, secondStatement, resultSet);
+
+        connection.close();
     }
 
     private static void printOutput(int id, PreparedStatement secondStatement, ResultSet resultSet) throws SQLException {
