@@ -22,14 +22,46 @@ public class AddMinion {
         checkIfVillainIsPresent(connectionSQL, villainName);
 
         String minionName = minionProperties.get(0);
-        int age = Integer.parseInt(minionProperties.get(1));
 
-        PreparedStatement preparedStatement =
-                connectionSQL.prepareStatement(PreparedStatements.INSERT_MINION);
-        preparedStatement.setString(1, minionName);
-        preparedStatement.setInt(2, age);
+        addMinionToDB(connectionSQL, minionProperties);
+
+        int minionId = getMinionId(connectionSQL, minionName);
+        int villainId = getVillainId(connectionSQL, villainName);
+
+        addMinionToVillain(connectionSQL, villainName, minionName, minionId, villainId);
+
+        connectionSQL.close();
+    }
+
+    private static void addMinionToVillain(Connection connectionSQL, String villainName, String minionName, int minionId, int villainId) throws SQLException {
+        PreparedStatement preparedStatement;
+        preparedStatement = connectionSQL.prepareStatement(PreparedStatements.ADD_MINION_TO_VILLAIN);
+        preparedStatement.setInt(1, minionId);
+        preparedStatement.setInt(2, villainId);
         preparedStatement.executeUpdate();
 
+        System.out.printf(Outputs.MINION_ADDED_TO_VILLAIN, minionName, villainName);
+    }
+
+    private static int getVillainId(Connection connectionSQL, String villainName) throws SQLException {
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
+
+        preparedStatement = connectionSQL.prepareStatement(PreparedStatements.SELECT_VILLAIN_BY_NAME);
+        preparedStatement.setString(1, villainName);
+        resultSet = preparedStatement.executeQuery();
+
+        int villainId;
+        if (resultSet.next()) {
+            villainId = resultSet.getInt(1);
+        } else {
+            throw new SQLException("Failed to retrieve villain ID.");
+        }
+        return villainId;
+    }
+
+    private static int getMinionId(Connection connectionSQL, String minionName) throws SQLException {
+        PreparedStatement preparedStatement;
         preparedStatement =
                 connectionSQL.prepareStatement(PreparedStatements.SELECT_MINION_BY_NAME);
         preparedStatement.setString(1, minionName);
@@ -42,26 +74,19 @@ public class AddMinion {
         } else {
             throw new SQLException("Failed to retrieve minion ID.");
         }
+        return minionId;
+    }
 
-        preparedStatement = connectionSQL.prepareStatement(PreparedStatements.SELECT_VILLAIN_BY_NAME);
-        preparedStatement.setString(1, villainName);
-        resultSet = preparedStatement.executeQuery();
+    private static String addMinionToDB(Connection connectionSQL, List<String> minionProperties) throws SQLException {
+        String minionName = minionProperties.get(0);
+        int age = Integer.parseInt(minionProperties.get(1));
 
-        int villainId;
-        if (resultSet.next()) {
-            villainId = resultSet.getInt(1);
-        } else {
-            throw new SQLException("Failed to retrieve villain ID.");
-        }
-
-        preparedStatement = connectionSQL.prepareStatement(PreparedStatements.ADD_MINION_TO_VILLAIN);
-        preparedStatement.setInt(1, minionId);
-        preparedStatement.setInt(2, villainId);
+        PreparedStatement preparedStatement =
+                connectionSQL.prepareStatement(PreparedStatements.INSERT_MINION);
+        preparedStatement.setString(1, minionName);
+        preparedStatement.setInt(2, age);
         preparedStatement.executeUpdate();
-
-        System.out.printf(Outputs.MINION_ADDED_TO_VILLAIN, minionName, villainName);
-
-        connectionSQL.close();
+        return minionName;
     }
 
     private static void checkIfTownIsPresent(Connection connectionSQL, String townName) throws SQLException {
