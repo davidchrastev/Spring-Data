@@ -2,11 +2,15 @@ package AddMinions04;
 
 import java.sql.*;
 import java.util.List;
-import java.util.Properties;
 
 public class AddMinion {
     public static void main(String[] args) throws SQLException {
+        startProgram();
+    }
+
+    private static void startProgram() throws SQLException {
         Connection connectionSQL = ConnectionSQL.setUpConnection();
+
         String input = Reader.read();
 
         List<String> minionProperties = Reader.getMinionProperties(input);
