@@ -81,7 +81,7 @@ public class AddMinion {
         return minionId;
     }
 
-    private static String addMinionToDB(Connection connectionSQL, List<String> minionProperties) throws SQLException {
+    private static void addMinionToDB(Connection connectionSQL, List<String> minionProperties) throws SQLException {
         String minionName = minionProperties.get(0);
         int age = Integer.parseInt(minionProperties.get(1));
 
@@ -90,7 +90,6 @@ public class AddMinion {
         preparedStatement.setString(1, minionName);
         preparedStatement.setInt(2, age);
         preparedStatement.executeUpdate();
-        return minionName;
     }
 
     private static void checkIfTownIsPresent(Connection connectionSQL, String townName) throws SQLException {
@@ -101,13 +100,13 @@ public class AddMinion {
         ResultSet resultSet = preparedStatement.executeQuery();
 
         if (!resultSet.next()) {
-            addTown(connectionSQL, PreparedStatements.INSERT_TOWN, townName);
+            addTown(connectionSQL, townName);
         }
     }
 
-    private static void addTown(Connection connectionSQL, String insertTown, String townName) throws SQLException {
+    private static void addTown(Connection connectionSQL, String townName) throws SQLException {
         PreparedStatement preparedStatement;
-        preparedStatement = connectionSQL.prepareStatement(insertTown);
+        preparedStatement = connectionSQL.prepareStatement(PreparedStatements.INSERT_TOWN);
         preparedStatement.setString(1, townName);
         preparedStatement.executeUpdate();
         System.out.printf(Outputs.TOWN_ADDED, townName);
