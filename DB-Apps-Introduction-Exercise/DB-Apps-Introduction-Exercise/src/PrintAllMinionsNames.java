@@ -11,23 +11,39 @@ import java.util.List;
 public class PrintAllMinionsNames {
 
     public static void main(String[] args) throws SQLException {
-        Connection connection = ConnectionSQL.setUpConnection();
+        Connection connection = setUpConnection();
 
         List<String> minionsNames = new ArrayList<>();
 
-        PreparedStatement preparedStatement =
-                connection.prepareStatement("SELECT name FROM minions");
+        ResultSet result = prepareAndExecute(connection);
 
-        ResultSet result = preparedStatement.executeQuery();
-
-
-        while (result.next()) {
-            minionsNames.add(result.getString("name"));
-        }
+        getMinionsNames(minionsNames, result);
 
         //Print
         //first + 1, last - 1, first + 2, last - 2 ....
 
+        printMinions(minionsNames);
+
+    }
+
+    private static Connection setUpConnection() throws SQLException {
+        return ConnectionSQL.setUpConnection();
+    }
+
+    private static ResultSet prepareAndExecute(Connection connection) throws SQLException {
+        PreparedStatement preparedStatement =
+                connection.prepareStatement("SELECT name FROM minions");
+
+        return preparedStatement.executeQuery();
+    }
+
+    private static void getMinionsNames(List<String> minionsNames, ResultSet result) throws SQLException {
+        while (result.next()) {
+            minionsNames.add(result.getString("name"));
+        }
+    }
+
+    private static void printMinions(List<String> minionsNames) {
         int front = 0;
         int rear = minionsNames.size() - 1;
         int counter = 0;
@@ -44,6 +60,5 @@ public class PrintAllMinionsNames {
 
             counter++;
         }
-
     }
 }
