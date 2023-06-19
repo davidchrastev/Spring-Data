@@ -1,5 +1,6 @@
-import AddMinions04.ConnectionSQL;
-import AddMinions04.PreparedStatements;
+package N05_print_all_minions_names;
+
+import N04_add_minions.ConnectionSQL;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

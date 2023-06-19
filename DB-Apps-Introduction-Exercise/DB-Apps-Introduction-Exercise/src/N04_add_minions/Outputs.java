@@ -1,4 +1,4 @@
-package AddMinions04;
+package N04_add_minions;
 
 public class Outputs {
     public final static String VILLAIN_ADDED = "Villain %s was added to the database";

@@ -1,4 +1,4 @@
-package AddMinions04;
+package N04_add_minions;
 
 import java.util.ArrayList;
 import java.util.List;

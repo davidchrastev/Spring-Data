@@ -1,4 +1,4 @@
-package AddMinions04;
+package N04_add_minions;
 
 public class PreparedStatements {
 
