@@ -1,4 +1,4 @@
-package N05_print_all_minions_names;
+package N07_print_all_minions_names;
 
 import N04_add_minions.ConnectionSQL;
 
