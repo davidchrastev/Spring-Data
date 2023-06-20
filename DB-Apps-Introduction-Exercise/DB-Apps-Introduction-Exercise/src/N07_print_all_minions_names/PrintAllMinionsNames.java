@@ -20,9 +20,6 @@ public class PrintAllMinionsNames {
 
         getMinionsNames(minionsNames, result);
 
-        //Print
-        //first + 1, last - 1, first + 2, last - 2 ....
-
         printMinions(minionsNames);
 
     }
