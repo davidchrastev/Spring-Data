@@ -3,40 +3,40 @@ package N06_remove_villain;
 import N04_add_minions.ConnectionSQL;
 
 import java.sql.*;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class VillainRemover {
     public static void main(String[] args) {
+        System.out.println(VillainRemoverPrintConstants.ENTER_VILLAIN_ID);
+
         int villainId = readVillainID();
 
-        String villainName = deleteVillain(villainId);
+        String result = deleteVillainAndHisMinions(villainId);
 
-        printResult(villainName);
-    }
-
-    private static int readVillainID() {
-        System.out.println(VillainRemoverPrintConstants.ENTER_VILLAIN_ID);
-        try {
-            Scanner scanner = new Scanner(System.in);
-            return Integer.parseInt(scanner.nextLine());
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Please enter a valid villain ID.");
-            return readVillainID();
-        }
+        printResult(result);
     }
 
     private static void printResult(String villainName) {
         if (villainName == null) {
             System.out.println("No such villain was found.");
         } else {
-            int numMinionsReleased = releaseMinions(villainName);
-            System.out.println(villainName + " was deleted");
-            System.out.println(numMinionsReleased + " minions released");
+            List<String> result = Arrays.stream(villainName.split(" ")).toList();
+
+            System.out.println(result.get(0) + " was deleted");
+            System.out.println(result.get(1) + " minions released");
         }
     }
 
-    public static String deleteVillain(int villainId) {
+    private static int readVillainID() {
+        Scanner scanner = new Scanner(System.in);
+        return Integer.parseInt(scanner.nextLine());
+    }
+
+    public static String deleteVillainAndHisMinions(int villainId) {
         String villainName = null;
+        int releasedMinions = 0;
 
         try (Connection connection = ConnectionSQL.setUpConnection()) {
             PreparedStatement selectStatement = connection.prepareStatement(MinionStatements.SELECT_VILLAIN_BY_ID);
@@ -46,9 +46,7 @@ public class VillainRemover {
             if (resultSet.next()) {
                 villainName = resultSet.getString("name");
 
-                PreparedStatement deleteMinionsStatement = connection.prepareStatement(MinionStatements.DELETE_VILLAIN_MINIONS);
-                deleteMinionsStatement.setInt(1, villainId);
-                deleteMinionsStatement.executeUpdate();
+                releasedMinions = releaseMinions(villainId);
 
                 PreparedStatement deleteVillainStatement = connection.prepareStatement(MinionStatements.DELETE_VILLAIN_BY_ID);
                 deleteVillainStatement.setInt(1, villainId);
@@ -58,25 +56,17 @@ public class VillainRemover {
             e.printStackTrace();
         }
 
-        return villainName;
+        return villainName + " " + releasedMinions;
     }
 
-    public static int releaseMinions(String villainName) {
+
+    public static int releaseMinions(int villainId) {
         int numMinionsReleased = 0;
 
         try (Connection connection = ConnectionSQL.setUpConnection()) {
-            PreparedStatement selectStatement = connection.prepareStatement(MinionStatements.SELECT_MINIONS_BY_VILLAIN);
-            selectStatement.setString(1, villainName);
-            ResultSet resultSet = selectStatement.executeQuery();
-
-            while (resultSet.next()) {
-                numMinionsReleased++;
-
-                int minionId = resultSet.getInt("id");
-                PreparedStatement updateStatement = connection.prepareStatement(MinionStatements.UPDATE_MINION_VILLAIN_NULL);
-                updateStatement.setInt(1, minionId);
-                updateStatement.executeUpdate();
-            }
+            PreparedStatement deleteStatement = connection.prepareStatement(MinionStatements.DELETE_VILLAIN_MINIONS);
+            deleteStatement.setInt(1, villainId);
+            numMinionsReleased = deleteStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
