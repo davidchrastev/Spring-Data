@@ -11,7 +11,7 @@ public class MinionAgeIncreaser01 {
 
     public static final String PRINT_MINIONS_PATTERN = "%s %d%n";
 
-    public static void main(String[] args) throws SQLException {
+    public static void startEighthTask() throws SQLException {
         Connection connection = ConnectionSQL.setUpConnection();
         List<Integer> minionIds = readMinionIds();
 

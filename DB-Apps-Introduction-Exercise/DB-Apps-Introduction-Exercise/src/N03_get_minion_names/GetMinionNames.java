@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.Scanner;
 
 public class GetMinionNames {
-    public static void main(String[] args) throws SQLException {
+    public static void startThirdTask() throws SQLException {
         int id = readInput();
 
         Connection connection = ConnectionSQL.setUpConnection();

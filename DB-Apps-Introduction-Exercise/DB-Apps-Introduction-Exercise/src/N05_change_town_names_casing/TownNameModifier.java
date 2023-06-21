@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 public class TownNameModifier {
 
-    public static void main(String[] args) {
+    public static void startFifthTask() {
         String country = readCountry();
 
         List<String> changedTowns = changeTownNames(country);

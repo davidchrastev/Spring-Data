@@ -11,7 +11,7 @@ import java.util.List;
 
 public class PrintAllMinionsNames {
 
-    public static void main(String[] args) throws SQLException {
+    public static void startSeventhTask() throws SQLException {
         Connection connection = setUpConnection();
 
         List<String> minionsNames = new ArrayList<>();

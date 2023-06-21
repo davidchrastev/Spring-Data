@@ -13,7 +13,7 @@ public class MinionAgeIncreaser02 {
     private static final String NO_MINION_WITH_GIVEN_ID = "No minion found with the provided ID.";
     private static final String PROCEDURE_NAME = "usp_get_older";
 
-    public static void main(String[] args) {
+    public static void startLastTask() {
 
         if (!StoredProcedureCreator.checkStoredProcedureExists(PROCEDURE_NAME)) {
             StoredProcedureCreator.createProcedureUpdateMinionsAge();

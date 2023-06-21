@@ -5,10 +5,10 @@ import java.util.List;
 
 public class AddMinion {
     public static void main(String[] args) throws SQLException {
-        startProgram();
+        startFourthTask();
     }
 
-    private static void startProgram() throws SQLException {
+    public static void startFourthTask() throws SQLException {
         Connection connectionSQL = ConnectionSQL.setUpConnection();
 
         String input = Reader.read();

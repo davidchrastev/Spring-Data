@@ -12,7 +12,7 @@ public class GetVillainsNames {
             "GROUP BY v.name\n" +
             "HAVING COUNT(mv.minion_id) > 15\n" +
             "ORDER BY COUNT(mv.minion_id) DESC";
-    public static void main(String[] args) throws SQLException {
+    public static void startSecondTask() throws SQLException {
         Connection connection = ConnectionSQL.setUpConnection();
 
         PreparedStatement statement = connection.prepareStatement(SELECT_VILLAIN_NAME_COUNT_MINIONS);

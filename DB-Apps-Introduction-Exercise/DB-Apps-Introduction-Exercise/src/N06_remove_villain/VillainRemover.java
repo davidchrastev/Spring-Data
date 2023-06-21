@@ -6,7 +6,7 @@ import java.sql.*;
 import java.util.Scanner;
 
 public class VillainRemover {
-    public static void main(String[] args) {
+    public static void startSixthTask() {
         System.out.println(VillainRemoverPrintConstants.ENTER_VILLAIN_ID);
 
         int villainId = readVillainID();
