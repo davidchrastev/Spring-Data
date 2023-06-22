@@ -1,3 +1,5 @@
+package controller;
+
 import N02_get_villains_names.GetVillainsNames;
 import N03_get_minion_names.GetMinionNames;
 import N04_add_minions.AddMinion;
