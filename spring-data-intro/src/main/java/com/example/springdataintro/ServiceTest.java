@@ -13,7 +13,11 @@ public class ServiceTest {
         this.testRepository = testRepository;
     }
 
-    public void checkTest() {
+    public TestEntity findByEmail(TestEntity testEntity) {
+        return testRepository.findByEmail(testEntity);
+    }
 
+    public TestEntity findByFirstNameAndEmail(TestEntity testEntity) {
+        return testRepository.findByFirstNameAndEmail(testEntity);
     }
 }
